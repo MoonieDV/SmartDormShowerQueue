@@ -20,6 +20,13 @@ class RegisterModel : Activity(), RegisterView {
         var loginBtn = findViewById<Button>(R.id.registerBtn)
         presenter = RegisterPresenter(this)
 
+        val signInLink = findViewById<android.widget.TextView>(R.id.signInLink)
+        signInLink.setOnClickListener {
+            val intent = Intent(this, LoginModel::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         loginBtn.setOnClickListener{
             val user = usernameText.text.toString()
             val pass = passwordText.text.toString()

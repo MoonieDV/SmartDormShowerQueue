@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.SmartHomeShowerQueue" parent="Base.Theme.SmartHomeShowerQueue" />
+
+    <style name="SideMenuDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/side_menu_enter</item>
+        <item name="android:windowExitAnimation">@anim/side_menu_exit</item>
+    </style>
 </resources>

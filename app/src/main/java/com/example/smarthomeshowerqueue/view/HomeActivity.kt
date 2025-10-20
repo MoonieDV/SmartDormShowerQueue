@@ -14,6 +14,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,6 +23,13 @@ import com.example.smarthomeshowerqueue.R
 import com.example.smarthomeshowerqueue.model.Shower
 import com.example.smarthomeshowerqueue.model.User
 import com.example.smarthomeshowerqueue.presenter.HomePresenter
+import android.app.Dialog
+import android.view.Gravity
+import android.view.WindowManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.content.Intent
+import com.example.smarthomeshowerqueue.model.LoginModel
 
 class HomeActivity : AppCompatActivity(), HomeView {
 
@@ -54,13 +62,22 @@ class HomeActivity : AppCompatActivity(), HomeView {
 
         floorSpinner = findViewById(R.id.floorSpinner)
 
+        // Notifications dialog on bell icon
+        findViewById<ImageView>(R.id.bellIcon).setOnClickListener {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_notifications, null)
+            AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setPositiveButton("Close") { d, _ -> d.dismiss() }
+                .show()
+        }
+
         // Bottom navigation wiring
         bottomNav.selectedItemId = R.id.nav_home
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true // already here
                 R.id.nav_menu -> {
-                    Toast.makeText(this, "Menu clicked", Toast.LENGTH_SHORT).show()
+                    showRightSideMenu()
                     true
                 }
                 else -> false
@@ -102,6 +119,59 @@ class HomeActivity : AppCompatActivity(), HomeView {
 
     }
 
+    private fun showRightSideMenu() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_side_menu)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+
+        val window = dialog.window
+        if (window != null) {
+            val params = WindowManager.LayoutParams()
+            params.copyFrom(window.attributes)
+            params.width = (resources.displayMetrics.widthPixels * 0.8).toInt()
+            params.height = WindowManager.LayoutParams.MATCH_PARENT
+            params.gravity = Gravity.END
+            window.attributes = params
+            window.attributes.windowAnimations = R.style.SideMenuDialogAnimation
+        }
+
+        dialog.findViewById<ImageView>(R.id.closeBtn)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+        }
+        dialog.findViewById<LinearLayout>(R.id.itemPrivacy)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+            startActivity(Intent(this, com.example.smarthomeshowerqueue.model.PrivacySecurityModel::class.java))
+        }
+        dialog.findViewById<LinearLayout>(R.id.itemPrivacyPolicy)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+            startActivity(Intent(this, com.example.smarthomeshowerqueue.model.PrivacyPolicyModel::class.java))
+        }
+        dialog.findViewById<LinearLayout>(R.id.itemTerms)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+            startActivity(Intent(this, com.example.smarthomeshowerqueue.model.TermsConditionsModel::class.java))
+        }
+        dialog.findViewById<LinearLayout>(R.id.profile)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+            startActivity(Intent(this, com.example.smarthomeshowerqueue.model.ProfileModel::class.java))
+        }
+        dialog.findViewById<LinearLayout>(R.id.itemLogout)?.setOnClickListener {
+            dialog.dismiss()
+            bottomNav.selectedItemId = R.id.nav_home
+            val intent = Intent(this, LoginModel::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+        dialog.setOnDismissListener {
+            bottomNav.selectedItemId = R.id.nav_home
+        }
+        dialog.show()
+    }
 
 
     override fun showShowers(showers: List<Shower>) {
@@ -122,14 +192,18 @@ class HomeActivity : AppCompatActivity(), HomeView {
             layout.layoutParams = lp
 
             val status = TextView(this).apply {
-                text = if (shower.isOccupied) "Occupied" else "Available"
+                val occupied = shower.isOccupied
+                text = if (occupied) "Occupied" else "Available"
                 textSize = 12f
-                setTextColor(ContextCompat.getColor(this@HomeActivity, android.R.color.darker_gray))
+                val colorRes = if (occupied) android.R.color.holo_red_dark else android.R.color.darker_gray
+                setTextColor(ContextCompat.getColor(this@HomeActivity, colorRes))
             }
 
             val size = (72 * resources.displayMetrics.density).toInt()
+            val padding = (6 * resources.displayMetrics.density).toInt()
             val frameLayout = FrameLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(size, size)
+                setPadding(padding, padding, padding, padding)
                 background = if (shower.isOccupied) {
                     ContextCompat.getDrawable(this@HomeActivity, R.drawable.occupied_border)
                 } else {
@@ -143,6 +217,7 @@ class HomeActivity : AppCompatActivity(), HomeView {
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
             }
 
             frameLayout.addView(image)

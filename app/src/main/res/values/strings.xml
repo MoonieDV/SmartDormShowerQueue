@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SmartHomeShowerQueue</string>
+    <string name="error_password_short">Password must be at least 6 characters.</string>
+    <string name="error_password_mismatch">Password mismatched.</string>
 </resources>

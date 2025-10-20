@@ -48,8 +48,8 @@
                 android:id="@+id/bellIcon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/setting_icon"
-                android:contentDescription="Settings"
+                android:src="@drawable/notif_icon"
+                android:contentDescription="Notification"
                 app:layout_constraintTop_toTopOf="@id/titleText"
                 app:layout_constraintBottom_toBottomOf="@id/titleText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
             <!-- Shower Grid (dynamic) -->
             <GridLayout
                 android:id="@+id/showerGrid"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:columnCount="3"
                 android:layout_marginTop="20dp"
@@ -108,14 +108,6 @@
                 app:layout_constraintTop_toBottomOf="@id/showerGrid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:id="@+id/refreshIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/refresh_icon"
-                    android:contentDescription="Refresh"/>
-
                 <TextView
                     android:id="@+id/updatedTime"
                     android:layout_width="wrap_content"
@@ -123,7 +115,7 @@
                     android:text="Updated: 10:24 PM"
                     android:textColor="#666666"
                     android:textSize="12sp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="0dp"/>
             </LinearLayout>
 
             <!-- Reminder Section -->
@@ -202,8 +194,10 @@
                                 android:layout_weight="1"
                                 android:text="Date"
                                 android:textColor="#2D3B45"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
 
                             <TextView
                                 android:layout_width="0dp"
@@ -211,8 +205,10 @@
                                 android:layout_weight="1"
                                 android:text="Timestamp"
                                 android:textColor="#2D3B45"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
 
                             <TextView
                                 android:layout_width="0dp"
@@ -220,8 +216,21 @@
                                 android:layout_weight="1"
                                 android:text="Bathroom No."
                                 android:textColor="#2D3B45"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Status"
+                                android:textColor="#2D3B45"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
                         </LinearLayout>
 
                         <!-- Rows container (kept id for presenter wiring) -->
@@ -243,10 +252,9 @@
         android:layout_height="56dp"
         android:background="#FFFFFF"
         app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconSize="24dp"
-        app:labelVisibilityMode="labeled"
         app:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

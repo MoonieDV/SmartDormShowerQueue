@@ -16,6 +16,27 @@
             android:name=".view.HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".model.ForgotPasswordModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.ChangePasswordModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.PrivacySecurityModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.PrivacyPolicyModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.TermsConditionsModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.ProfileModel"
+            android:exported="false" />
+        <activity
+            android:name=".model.EditProfileModel"
+            android:exported="false" />
+        <activity
             android:name=".model.RegisterModel"
             android:exported="false" />
         <activity

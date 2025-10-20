@@ -38,7 +38,8 @@ class LoginModel : Activity(), LoginView {
         val forgotPassword = findViewById<android.widget.TextView>(R.id.forgotPassword)
         forgotPassword.paintFlags = forgotPassword.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         forgotPassword.setOnClickListener {
-            Toast.makeText(this, "Forgot password tapped", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ForgotPasswordModel::class.java)
+            startActivity(intent)
         }
     }
 
